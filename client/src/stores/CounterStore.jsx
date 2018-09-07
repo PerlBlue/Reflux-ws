@@ -14,7 +14,10 @@ class CounterStore extends Reflux.Store {
         this.handleConnect = this.handleConnect.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleDisconnect = this.handleDisconnect.bind(this);
-        this.listenables = CounterActions;
+
+        // actions to listen to
+        this.listenables = [WsActions, CounterActions];
+        console.log("CounterStore: constructor");
     }
 
     handleConnect() {
@@ -58,27 +61,26 @@ class CounterStore extends Reflux.Store {
         });
     }
 
-    onDestroy() {
+    onWsDestroy() {
         this.ids = [];
         this.socket.disconnect();
     }
 
-    onEnable(id) {
+    onCounterEnable(id) {
         this.socket.emit('enable', {id});
     }
 
-    onDisable(id) {
+    onCounterDisable(id) {
         this.socket.emit('disable', {id});
     }
 
-    onInit(ids) {
+    onCounterInit(ids) {
         this.ids = ids;
-        if (!this.socket) {
-            this.socket = io.connect(this.url);
-        }
-        this.handleConnect();
+//        if (!this.socket) {
+//            this.socket = io.connect(this.url);
+//        }
+//        this.handleConnect();
     }
-
 }
 
 export default CounterStore;
