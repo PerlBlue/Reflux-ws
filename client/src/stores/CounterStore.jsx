@@ -1,46 +1,23 @@
 import Reflux from 'reflux';
 import CounterActions from '../actions/CounterActions';
+import WsActions from '../actions/WsActions';
+
 import io from 'socket.io-client';
 
 class CounterStore extends Reflux.Store {
 
     constructor(props) {
         super(props);
-        this.url = 'ws://localhost:3001';
         this.ids = [];
-        this.connected = false;
-        this.socket = null;
         this.state = {};
-        this.handleConnect = this.handleConnect.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
-        this.handleDisconnect = this.handleDisconnect.bind(this);
-
+        this.onWsConnected = this.onWsConnected.bind(this);
         // actions to listen to
-        this.listenables = [CounterActions];
+        this.listenables = [CounterActions, WsActions];
         console.log("CounterStore: constructor");
     }
 
-    handleConnect() {
-        if (!this.socket) {
-            return false;
-        }
-        this.socket.on('connect', () => {
-            if (!this.socket) {
-                return false;
-            }
-            this.connected = true;
-            let ids = this.ids;
-            this.socket.emit('subscribe', {ids}, () => {
-                this.handleUpdate();
-            });
-            this.handleDisconnect();
-        });
-    }
-
     handleUpdate() {
-        if (!this.socket) {
-            return false;
-        }
         this.socket.on('update', (data) => {
             this.setState({[data.id]: data});
         });
@@ -53,19 +30,6 @@ class CounterStore extends Reflux.Store {
         });
     }
 
-    handleDisconnect() {
-        this.socket.on('disconnect', () => {
-            this.connected = false;
-            this.setState({});
-            return;
-        });
-    }
-
-    onWsDestroy() {
-        this.ids = [];
-        this.socket.disconnect();
-    }
-
     onCounterEnable(id) {
         this.socket.emit('enable', {id});
     }
@@ -76,10 +40,14 @@ class CounterStore extends Reflux.Store {
 
     onCounterInit(ids) {
         this.ids = ids;
-//        if (!this.socket) {
-//            this.socket = io.connect(this.url);
-//        }
-//        this.handleConnect();
+    }
+
+    onWsConnected() {
+        console.log("Counter WS Connect");
+        let ids = this.ids;
+        // Now send a subscribe message
+        console.log("Counter: subscribe to WS");
+        WsActions.wsCall('subscribe', {ids} );
     }
 }
 
