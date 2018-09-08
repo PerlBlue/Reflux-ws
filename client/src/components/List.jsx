@@ -18,7 +18,8 @@ class List extends Reflux.Component {
            ids.push(item.id);
         });
         Reflux.initStore(CounterStore);
-        CounterActions.init(ids);
+        CounterActions.counterInit(ids);
+        WsActions.wsInit();
     }
 
     render() {

@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import List from './components/List';
+import Ws from './dao/Ws.js';
+
 import '../css/style.css';
 
 window.onload = () => {
@@ -11,6 +13,8 @@ window.onload = () => {
         {id: 4, name: "User 4"},
     ];
     const infoUrl = 'http://localhost:3001/info';
+    const ws = new Ws();
+
     ReactDOM.render(
         <List items={items} infoUrl={infoUrl} />,
         document.getElementById('list')

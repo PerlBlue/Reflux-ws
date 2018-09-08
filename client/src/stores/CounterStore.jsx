@@ -16,7 +16,7 @@ class CounterStore extends Reflux.Store {
         this.handleDisconnect = this.handleDisconnect.bind(this);
 
         // actions to listen to
-        this.listenables = [WsActions, CounterActions];
+        this.listenables = [CounterActions];
         console.log("CounterStore: constructor");
     }
 
