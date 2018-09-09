@@ -63,10 +63,12 @@ socketServer.on('connection', (socket) => {
     socket.on('subscribe', (data, fn) => {
         if (typeof data.ids !== 'undefined' && data.ids.length) { //received ids subscribing to
             items = data.ids;
+
+            console.log("SUBSCRIBE: %o", fn);
             fn();
             if (!interval) {
                 interval = setInterval(() => {
-                    socketServer.emit('update', updateNumberMessage()); //emit update with random number 
+                    socketServer.emit('update', updateNumberMessage()); //emit update with random number
                 }, 2000);
             }
         } else { //emit error message

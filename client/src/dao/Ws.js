@@ -21,15 +21,13 @@ class Ws {
             console.log("WS socket=%o",this.socket);
         } );
 
-        WsActions.wsCall.listen( (method, args) => {
+        WsActions.wsCall.listen( (method, args, fn) => {
             console.log("WsActions:wsCall method="+method+" args=%o",args);
             console.log("WsActions:wsCall args %o", args);
             console.log("WsActions:wsCall socket=%o", this.socket);
+            console.log("WsActions:wsCall fn=%o", fn);
 
-            this.socket.emit(method, args, () => {
-                console.log("WS handle update method="+method+" args=%o",args);
-                this.socket.emit( method, args );
-            })
+            this.socket.emit(method, args, fn);
         });
 
 		console.log("WS Constructor");
@@ -54,6 +52,12 @@ class Ws {
             // Let everyone know we have connected.
             WsActions.wsConnected();
         });
+
+        this.socket.on('update', (payload) => {
+            console.log("WsActions:handle update %o",payload);
+            WsActions.wsReceivedUpdate(payload);
+        });
+
 
     }
 

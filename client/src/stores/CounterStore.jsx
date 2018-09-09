@@ -12,30 +12,33 @@ class CounterStore extends Reflux.Store {
         this.state = {};
         this.handleUpdate = this.handleUpdate.bind(this);
         this.onWsConnected = this.onWsConnected.bind(this);
+        this.onWsReceivedUpdate = this.onWsReceivedUpdate.bind(this);
+
         // actions to listen to
         this.listenables = [CounterActions, WsActions];
         console.log("CounterStore: constructor");
     }
 
     handleUpdate() {
-        this.socket.on('update', (data) => {
-            this.setState({[data.id]: data});
-        });
-        this.socket.on('status', (data) => {
-            this.setState({[data.id]: data});
-        });
-        this.socket.on('error', (data) => {
-            alert(data.message);
-            this.onDestroy();
-        });
+        console.log('CounterStore:handleUpdate');
+        //this.socket.on('update', (data) => {
+        //    this.setState({[data.id]: data});
+        //});
+        //this.socket.on('status', (data) => {
+        //    this.setState({[data.id]: data});
+        //});
+        //this.socket.on('error', (data) => {
+        //    alert(data.message);
+        //    this.onDestroy();
+        //});
     }
 
     onCounterEnable(id) {
-        this.socket.emit('enable', {id});
+        //this.socket.emit('enable', {id});
     }
 
     onCounterDisable(id) {
-        this.socket.emit('disable', {id});
+        //this.socket.emit('disable', {id});
     }
 
     onCounterInit(ids) {
@@ -47,7 +50,14 @@ class CounterStore extends Reflux.Store {
         let ids = this.ids;
         // Now send a subscribe message
         console.log("Counter: subscribe to WS");
-        WsActions.wsCall('subscribe', {ids} );
+        WsActions.wsCall('subscribe', {ids}, () => {
+            this.handleUpdate();
+        });
+    }
+
+    onWsReceivedUpdate(payload) {
+        this.setState({[payload.id]: payload});
+        console.log("Counters %o",this.state);
     }
 }
 
