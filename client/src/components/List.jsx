@@ -24,16 +24,15 @@ class List extends Reflux.Component {
 
     render() {
         return (
-            <div>hello</div>
-//            <div className="list">
-//                {
-//                    this.props.items.map((item, index) => {
-//                        item.key = index;
-//                        return <Item { ...item } />
-//                    })
-//                }
-//            <Info infoUrl={this.props.infoUrl} />
-//            </div>
+            <div className="list">
+                {
+                    this.props.items.map((item, index) => {
+                        item.key = index;
+                        return <Item { ...item } />
+                    })
+                }
+            <Info infoUrl={this.props.infoUrl} />
+            </div>
            );
     }
 

@@ -36,21 +36,22 @@ class Counter extends Reflux.Component {
 
     handleClick(e) { //change status on click
         if (this.state.status === 'enabled') {
-            CounterActions.disable(this.props.id);
+            CounterActions.counterDisable(this.props.id);
         }
         if (this.state.status === 'disabled') {
-            CounterActions.enable(this.props.id);
+            CounterActions.counterEnable(this.props.id);
         }
     }
 
     render() {
-        const counterClass = 'list__counter' + ' '
-                + 'list__counter--' + this.state.status;
+        const counterClass = 'list__counter' + ' ' + 'list__counter--' + this.state.status;
+        console.log("Counter: Class: "+counterClass);
+
         return (
-                <div onClick={this.handleClick} className={counterClass}>
-                    {this.state.number}
-                </div>
-                );
+            <div onClick={this.handleClick} className={counterClass}>
+                {this.state.number}
+            </div>
+            );
     }
 
 }

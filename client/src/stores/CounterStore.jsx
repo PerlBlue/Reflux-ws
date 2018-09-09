@@ -34,11 +34,13 @@ class CounterStore extends Reflux.Store {
     }
 
     onCounterEnable(id) {
-        //this.socket.emit('enable', {id});
+        console.log("Enable counter "+id);
+        WsActions.wsCall('enable', {id});
     }
 
     onCounterDisable(id) {
-        //this.socket.emit('disable', {id});
+        console.log("Disable counter "+id);
+        WsActions.wsCall('disable', {id});
     }
 
     onCounterInit(ids) {
