@@ -6,39 +6,25 @@ import CounterStore from '../stores/CounterStore';
 class Counter extends Reflux.Component {
 
     constructor(props) {
+        // So we can access 'this.props' in the constructor
         super(props);
+
+        console.log("Counter props = %o", this.props);
+        // Local state
         this.state = {
-            number: 0,
             status: 'enabled',
         };
-        this.processData = this.processData.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.mapStoreToState(CounterStore, (data) => {
-            if (typeof data[this.props.id] !== 'undefined') {
-                return this.processData(data[this.props.id]);
-            }
-        });
-    }
-
-    processData(data) {
-        let stateObj = Object.assign({}, this.state);
-        if (typeof data.error !== 'undefined') {
-            alert(data.error);
-        }
-        if (typeof data.number !== 'undefined' && this.state.status !== 'disabled') {
-            stateObj.number = data.number;
-        }
-        if (typeof data.status !== 'undefined') {
-            stateObj.status = data.status;
-        }
-        return stateObj;
     }
 
     handleClick(e) { //change status on click
+        console.log("handleClick");
         if (this.state.status === 'enabled') {
+            this.setState({ status: 'disabled' });
             CounterActions.disable(this.props.id);
         }
         if (this.state.status === 'disabled') {
+            this.setState({ status: 'enabled' });
             CounterActions.enable(this.props.id);
         }
     }
@@ -47,13 +33,11 @@ class Counter extends Reflux.Component {
         const counterClass = 'list__counter' + ' '
                 + 'list__counter--' + this.state.status;
         return (
-                <div onClick={this.handleClick} className={counterClass}>
-                    {this.state.number}
-                </div>
-                );
+            <div onClick={this.handleClick} className={counterClass}>
+                {this.props.id.number}
+            </div>
+        );
     }
-
-}
-;
+};
 
 export default Counter;
