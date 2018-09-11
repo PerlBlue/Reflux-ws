@@ -66,7 +66,8 @@ socketServer.on('connection', (socket) => {
             fn();
             if (!interval) {
                 interval = setInterval(() => {
-                    socketServer.emit('update', updateNumberMessage()); //emit update with random number 
+                    console.log("UPDATE:");
+                    socketServer.emit('update', updateNumberMessage()); //emit update with random number
                 }, 2000);
             }
         } else { //emit error message
@@ -76,6 +77,7 @@ socketServer.on('connection', (socket) => {
     });
 
     socket.on('disable', (data) => {
+        console.log("disable %o",data);
         if (typeof data.id === 'undefined') {
             return false;
         }
@@ -86,6 +88,7 @@ socketServer.on('connection', (socket) => {
     });
 
     socket.on('enable', (data) => {
+        console.log("enable %o",data);
         if (typeof data.id === 'undefined') {
             return false;
         }

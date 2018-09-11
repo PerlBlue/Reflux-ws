@@ -4,16 +4,28 @@ import io from 'socket.io-client';
 
 class CounterStore extends Reflux.Store {
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.url = 'ws://localhost:3001';
-        this.ids = [];
+
+    	this.state = {items: [
+	        {name: "User 1", number: 0},
+	        {name: "User 2", number: 0},
+	        {name: "User 3", number: 0},
+	        {name: "User 4", number: 0},
+	    ]};
+
         this.connected = false;
         this.socket = null;
-        this.state = {};
+
         this.handleConnect = this.handleConnect.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleDisconnect = this.handleDisconnect.bind(this);
+
+        this.socket = io.connect(this.url);
+        this.handleConnect();
+        console.log("ITEMS: %o",this.state.items);
+
         this.listenables = CounterActions;
     }
 
@@ -26,7 +38,9 @@ class CounterStore extends Reflux.Store {
                 return false;
             }
             this.connected = true;
-            let ids = this.ids;
+            let ids = [0,1,2,3];
+            console.log("SUBSCRIBE: %o", ids);
+
             this.socket.emit('subscribe', {ids}, () => {
                 this.handleUpdate();
             });
@@ -39,10 +53,17 @@ class CounterStore extends Reflux.Store {
             return false;
         }
         this.socket.on('update', (data) => {
-            this.setState({[data.id]: data});
+            console.log("handleUpdate %o", data);
+
+            let items = this.state.items;
+            items[data.id].number = data.number;
+            this.setState(items);
+
+            console.log("handleUpdate 2 %o", this.state.items);
+
         });
         this.socket.on('status', (data) => {
-            this.setState({[data.id]: data});
+            this.setState({[data]: data});
         });
         this.socket.on('error', (data) => {
             alert(data.message);
@@ -59,24 +80,29 @@ class CounterStore extends Reflux.Store {
     }
 
     onDestroy() {
-        this.ids = [];
+        this.state = {};
         this.socket.disconnect();
     }
 
     onEnable(id) {
+        console.log("onEnable %o",id);
         this.socket.emit('enable', {id});
     }
 
     onDisable(id) {
+        console.log("onDisable %o",id);
         this.socket.emit('disable', {id});
     }
 
     onInit(ids) {
-        this.ids = ids;
+        console.log("onInit: %o",ids);
+
+//        this.ids = ids;
         if (!this.socket) {
             this.socket = io.connect(this.url);
         }
         this.handleConnect();
+        console.log("ITEMS: %o",this.state.items);
     }
 
 }

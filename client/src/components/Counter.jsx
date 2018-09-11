@@ -14,6 +14,8 @@ class Counter extends Reflux.Component {
         this.state = {
             status: 'enabled',
         };
+        console.log("Counter props %o",this.props);
+
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -34,7 +36,7 @@ class Counter extends Reflux.Component {
                 + 'list__counter--' + this.state.status;
         return (
             <div onClick={this.handleClick} className={counterClass}>
-                {this.props.id.number}
+                {this.props.number}
             </div>
         );
     }
