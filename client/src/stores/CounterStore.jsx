@@ -24,7 +24,6 @@ class CounterStore extends Reflux.Store {
 
         this.socket = io.connect(this.url);
         this.handleConnect();
-        console.log("ITEMS: %o",this.state.items);
 
         this.listenables = CounterActions;
     }
@@ -39,7 +38,6 @@ class CounterStore extends Reflux.Store {
             }
             this.connected = true;
             let ids = [0,1,2,3];
-            console.log("SUBSCRIBE: %o", ids);
 
             this.socket.emit('subscribe', {ids}, () => {
                 this.handleUpdate();
@@ -53,13 +51,12 @@ class CounterStore extends Reflux.Store {
             return false;
         }
         this.socket.on('update', (data) => {
-            console.log("handleUpdate %o", data);
 
             let items = this.state.items;
             items[data.id].number = data.number;
+
             this.setState(items);
 
-            console.log("handleUpdate 2 %o", this.state.items);
 
         });
         this.socket.on('status', (data) => {
@@ -85,24 +82,20 @@ class CounterStore extends Reflux.Store {
     }
 
     onEnable(id) {
-        console.log("onEnable %o",id);
         this.socket.emit('enable', {id});
     }
 
     onDisable(id) {
-        console.log("onDisable %o",id);
         this.socket.emit('disable', {id});
     }
 
     onInit(ids) {
-        console.log("onInit: %o",ids);
 
 //        this.ids = ids;
         if (!this.socket) {
             this.socket = io.connect(this.url);
         }
         this.handleConnect();
-        console.log("ITEMS: %o",this.state.items);
     }
 
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import Reflux from 'reflux';
 import CounterActions from '../actions/CounterActions';
-import CounterStore from '../stores/CounterStore';
 
 class Counter extends Reflux.Component {
 
@@ -9,18 +8,15 @@ class Counter extends Reflux.Component {
         // So we can access 'this.props' in the constructor
         super(props);
 
-        console.log("Counter props = %o", this.props);
         // Local state
         this.state = {
             status: 'enabled',
         };
-        console.log("Counter props %o",this.props);
 
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(e) { //change status on click
-        console.log("handleClick");
         if (this.state.status === 'enabled') {
             this.setState({ status: 'disabled' });
             CounterActions.disable(this.props.id);

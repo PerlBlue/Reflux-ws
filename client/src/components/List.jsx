@@ -14,20 +14,17 @@ class List extends Reflux.Component {
     }
 
     componentDidMount() {
-        console.log("List STATE 1 %o", this.state.items);
+        console.log("Component Did Mount %o", this.state.items);
     }
 
     render() {
-        console.log("List STATE %o",this.state.items);
-
         return (
             <div className="list">
                 {
                     this.state.items.map((item, index) => {
                         // Each item in an array must have a unique 'key'
-                        console.log("List ITEM %o",item);
-                        console.log("List INDEX %o", index);
                         item.key = index;
+                        item.id = index;
 
                         // Use the 'rest operator' (three dots)
                         return <Item {...item} />
