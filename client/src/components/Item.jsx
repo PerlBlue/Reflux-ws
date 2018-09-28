@@ -1,13 +1,22 @@
 import React from 'react';
+import Reflux from 'reflux';
+
 import Counter from './Counter';
 
-const Item = (props) => {
-    return (
+class Item extends Reflux.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
             <div className="list__item">
-                <div className="list__name">{props.name}</div>
-                <Counter id={props.id} />
+                <div className="list__name">{this.props.name}</div>
+                <Counter {...this.props} />
             </div>
-    );  
-};
+        );
+    }
+}
 
 export default Item;

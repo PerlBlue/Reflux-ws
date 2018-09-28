@@ -2,7 +2,6 @@ import React from 'react';
 import Reflux from 'reflux';
 import Item from './Item';
 import CounterStore from '../stores/CounterStore';
-import CounterActions from '../actions/CounterActions';
 import WsActions from '../actions/WsActions';
 import Info from './Info';
 
@@ -10,15 +9,10 @@ class List extends Reflux.Component {
 
     constructor(props) {
         super(props);
+        this.store = CounterStore;
     }
 
     componentDidMount() {
-        let ids = [];
-        this.props.items.forEach((item) => {
-           ids.push(item.id);
-        });
-        Reflux.initStore(CounterStore);
-        CounterActions.counterInit(ids);
         WsActions.wsInit();
     }
 
@@ -26,12 +20,9 @@ class List extends Reflux.Component {
         return (
             <div className="list">
                 {
-                    this.props.items.map((item, index) => {
-                        item.key = index;
-                        return <Item { ...item } />
-                    })
+                    item.key = index;
+                    return <Item { ...item } />
                 }
-            <Info infoUrl={this.props.infoUrl} />
             </div>
            );
     }
