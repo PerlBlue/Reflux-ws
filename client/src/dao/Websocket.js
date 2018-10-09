@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-import WsActions from '../actions/WsActions.jsx';
+import WebsocketActions from '../actions/WebsocketActions.jsx';
 
 class Ws {
 
@@ -11,8 +11,29 @@ class Ws {
         this.handleConnect = this.handleConnect.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleDisconnect = this.handleDisconnect.bind(this);
+        this.handleOpen = this.handleOpen.bind(this);
 
         this.socket = new WebSocket(this.url);
+        this.socket.onopen = function(event) {
+            this.handleOpen(event);
+        }.bind(this);
+
+        WebsocketActions.websocketOpened.listen( (result) => {
+            console.log("Websocket Opened Triggered");
+        });
+        WebsocketActions.websocketSend.listen( (content) => {
+            var msg = JSON.stringify(content);
+            console.log("Websocket SEND "+msg);
+            this.socket.send(msg);
+        });
+
+//        WsActions.wsOpened.listen( (result) => {
+//            console.log("WS Opened 1");
+//        })
+
+//        WsActions.wsSend.listen( (msg) => {
+//            console.log("WS SEND");
+//        })
 
 ///        WsActions.wsInit.listen( (result) => {
 ///            console.log("WS Init Triggered %o", this);
@@ -35,20 +56,34 @@ class Ws {
 		console.log("WS Constructor");
     }
 
-    handleOpen() {
-        this.connected = true;
-        var content = {
-            route : 'demo/register',
-            content : {
-                ids : 4
-            }
-        };
+    // On receiving a wsSend action, send it to the server
+    onWebsocketSend(content) {
         var msg = JSON.stringify(content);
-        console.log("ON-OPEN ["+msg+"]");
-
+        console.log("Send message to server "+msg);
         this.socket.send(msg);
     }
-    
+
+    // Handle the opening of the web-socket
+    handleOpen() {
+        this.connected = true;
+
+        // Inform anyone that the connection is opened
+        WebsocketActions.websocketOpened('hello');
+        console.log("WS: handleOpen");
+
+
+//        var content = {
+//            route : 'demo/register',
+//            content : {
+//                ids : 4
+//            }
+//        };
+//        var msg = JSON.stringify(content);
+//        console.log("ON-OPEN ["+msg+"]");
+//
+//        this.socket.send(msg);
+    }
+
     handleConnect() {
         if (!this.socket) {
             return false;

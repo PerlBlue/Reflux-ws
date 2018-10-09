@@ -3,7 +3,6 @@ import Reflux from 'reflux';
 import Item from './Item';
 import CounterStore from '../stores/CounterStore';
 import CounterActions from '../actions/CounterActions';
-import Info from './Info';
 
 class List extends Reflux.Component {
 
