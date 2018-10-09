@@ -1,5 +1,5 @@
 import Reflux from 'reflux';
 
-const CounterActions = Reflux.createActions(['init', 'destroy', 'enable', 'disable']);
+const CounterActions = Reflux.createActions(['counterInit', 'counterDestroy', 'counterEnable', 'counterDisable']);
 
 export default CounterActions;

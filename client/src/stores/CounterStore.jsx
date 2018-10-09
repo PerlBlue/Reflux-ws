@@ -18,10 +18,9 @@ class CounterStore extends Reflux.Store {
 
         this.connected = false;
         this.handleOpen = this.handleOpen.bind(this);
-
-//        this.handleConnect = this.handleConnect.bind(this);
-//        this.handleUpdate = this.handleUpdate.bind(this);
-//        this.handleDisconnect = this.handleDisconnect.bind(this);
+        this.onCounterEnable = this.onCounterEnable.bind(this);
+        this.onCounterDisable = this.onCounterDisable.bind(this);
+        this.onCounterDestroy = this.onCounterDestroy.bind(this);
 
         this.socket = new WebSocket(this.url);
         this.handleConnect();
@@ -31,8 +30,13 @@ class CounterStore extends Reflux.Store {
 
     handleOpen() {
         this.connected = true;
-        let ids = [0,1,2,3];
-        var msg = JSON.stringify(ids);
+        var content = {
+            route : 'demo/register',
+            content : {
+                ids : 4
+            }
+        };
+        var msg = JSON.stringify(content);
         console.log("ON-OPEN ["+msg+"]");
 
         this.socket.send(msg);
@@ -49,19 +53,35 @@ class CounterStore extends Reflux.Store {
         this.socket.onmessage = function(event) {
             console.log("ON-MESSAGE"+event.data);
         };
+    }
 
-//        this.socket.on('connect', () => {
-//            if (!this.socket) {
-//                return false;
-//            }
-//            this.connected = true;
-//            let ids = [0,1,2,3];
-//
-//            this.socket.emit('subscribe', {ids}, () => {
-//                this.handleUpdate();
-//            });
-//            this.handleDisconnect();
-//        });
+    onCounterDestroy() {
+        this.state = {};
+        this.socket.disconnect();
+    }
+
+    onCounterEnable(id) {
+        var content = {
+            route : 'demo/enable',
+            content : {
+                id : id
+            }
+        };
+        var msg = JSON.stringify(content);
+        console.log("ON-ENABLE ["+msg+"]");
+        this.socket.send(msg);
+    }
+
+    onCounterDisable(id) {
+        var content = {
+            route : 'demo/disable',
+            content : {
+                id : id
+            }
+        };
+        var msg = JSON.stringify(content);
+        console.log("ON-DISABLE ["+msg+"]");
+        this.socket.send(msg);
     }
 
 //    handleUpdate() {
@@ -93,19 +113,6 @@ class CounterStore extends Reflux.Store {
 //            return;
 //        });
 //    }
-
-    onDestroy() {
-        this.state = {};
-        this.socket.disconnect();
-    }
-
-    onEnable(id) {
-        this.socket.emit('enable', {id});
-    }
-
-    onDisable(id) {
-        this.socket.emit('disable', {id});
-    }
 
 //    onInit(ids) {
 //
