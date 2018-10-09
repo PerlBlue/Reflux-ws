@@ -12,10 +12,6 @@ class List extends Reflux.Component {
         this.store = CounterStore;
     }
 
-    componentDidMount() {
-        console.log("Component Did Mount %o", this.state.items);
-    }
-
     render() {
         return (
             <div className="list">
