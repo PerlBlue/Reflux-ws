@@ -1,5 +1,4 @@
 import React from 'react';
-import CounterActions from '../actions/CounterActions';
 
 class Counter extends React.Component {
 
@@ -11,14 +10,14 @@ class Counter extends React.Component {
         this.state = {
             status: 'enabled',
         };
-        console.log("constructor: "+this.props.id);
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(e) {
-        // change status on click, update click counter
+        // update the counter in the parent
         this.props.updateCounter(this.props.id);
 
+        // Change the local state to reflect the enabled status
         if (this.state.status === 'enabled') {
             this.setState({ status: 'disabled' });
         }
