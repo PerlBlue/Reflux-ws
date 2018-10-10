@@ -1,28 +1,40 @@
 import React from 'react';
-import Reflux from 'reflux';
 import Item from './Item';
-import CounterStore from '../stores/CounterStore';
-import CounterActions from '../actions/CounterActions';
 
-class List extends Reflux.Component {
+class List extends React.Component {
 
     constructor(props) {
         super(props);
 
-        this.store = CounterStore;
+        this.state = {items: [
+            {name: "User 1", number: 0},
+            {name: "User 2", number: 0},
+            {name: "User 3", number: 0},
+            {name: "User 4", number: 0},
+        ]};
+        this.updateCounter = this.updateCounter.bind(this);
     }
+    updateCounter(index) {
+        console.log("got here %o",index);
+        const newItems = this.state.items.slice();
+        newItems[index].number = newItems[index].number + 1;
+        this.setState({items: newItems});
 
+    }
     render() {
         return (
             <div className="list">
                 {
                     this.state.items.map((item, index) => {
-                        // Each item in an array must have a unique 'key'
-                        item.key = index;
-                        item.id = index;
+                        // shallow copy
+                        const props = Object.assign({
+                            key: index,
+                            id: index,
+                            updateCounter: this.updateCounter,
+                        }, item);
 
                         // Use the 'rest operator' (three dots)
-                        return <Item {...item} />
+                        return <Item {...props} />
                     })
                 }
             </div>

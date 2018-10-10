@@ -1,8 +1,7 @@
 import React from 'react';
-import Reflux from 'reflux';
 import CounterActions from '../actions/CounterActions';
 
-class Counter extends Reflux.Component {
+class Counter extends React.Component {
 
     constructor(props) {
         // So we can access 'this.props' in the constructor
@@ -12,18 +11,19 @@ class Counter extends Reflux.Component {
         this.state = {
             status: 'enabled',
         };
-
+        console.log("constructor: "+this.props.id);
         this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick(e) { //change status on click
+    handleClick(e) {
+        // change status on click, update click counter
+        this.props.updateCounter(this.props.id);
+
         if (this.state.status === 'enabled') {
             this.setState({ status: 'disabled' });
-            CounterActions.counterDisable(this.props.id);
         }
         if (this.state.status === 'disabled') {
             this.setState({ status: 'enabled' });
-            CounterActions.counterEnable(this.props.id);
         }
     }
 

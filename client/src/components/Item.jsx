@@ -7,6 +7,8 @@ class Item extends Reflux.Component {
 
     constructor(props) {
         super(props);
+
+        console.log("ITEM: "+this.props.id);
     }
 
     render() {
