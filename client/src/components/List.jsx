@@ -7,15 +7,15 @@ class List extends React.Component {
         super(props);
 
         this.state = {items: [
-            {name: "User 1", number: 0},
-            {name: "User 2", number: 0},
-            {name: "User 3", number: 0},
-            {name: "User 4", number: 0},
+            {id: 0, name: "User 1", number: 0},
+            {id: 1, name: "User 2", number: 0},
+            {id: 2, name: "User 3", number: 0},
+            {id: 3, name: "User 4", number: 0},
         ]};
         this.updateCounter = this.updateCounter.bind(this);
     }
     updateCounter(index) {
-        console.log("got here %o",index);
+        console.log("Update Counter %o",index);
         const newItems = this.state.items.slice();
         newItems[index].number = newItems[index].number + 1;
         this.setState({items: newItems});
@@ -29,7 +29,6 @@ class List extends React.Component {
                         // shallow copy
                         const props = Object.assign({
                             key: index,
-                            id: index,
                             updateCounter: this.updateCounter,
                         }, item);
 
