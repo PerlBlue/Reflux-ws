@@ -17,12 +17,14 @@ class List extends Reflux.Component {
             <div className="list">
                 {
                     this.state.items.map((item, index) => {
-                        // Each item in an array must have a unique 'key'
-                        item.key = index;
-                        item.id = index;
+                        // shallow copy, 'key' is required by react
+                        // to identify the item in the DOM
+                        const props = Object.assign({
+                            key: index,
+                        }, item);
 
                         // Use the 'rest operator' (three dots)
-                        return <Item {...item} />
+                        return <Item {...props} />
                     })
                 }
             </div>
