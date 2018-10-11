@@ -8,16 +8,15 @@ class CounterStore extends Reflux.Store {
 
     constructor() {
         super();
-        this.url = 'ws://localhost:8090';
 
     	this.state = {items: [
-	        {name: "User 1", number: 0},
-	        {name: "User 2", number: 0},
-	        {name: "User 3", number: 0},
-	        {name: "User 4", number: 0},
+	        {name: "User 1", number: 0, state: 'enabled'},
+	        {name: "User 2", number: 0, state: 'enabled'},
+	        {name: "User 3", number: 0, state: 'enabled'},
+	        {name: "User 4", number: 0, state: 'enabled'},
 	    ]};
 
-        this.listenables = [WebsocketActions, CounterActions];
+        this.listenables = [CounterActions];
     }
 
     onCounterDestroy() {
@@ -25,31 +24,13 @@ class CounterStore extends Reflux.Store {
     }
 
     onCounterEnable(id) {
-        WebsocketActions.websocketSend({
-            route : 'demo/enable',
-            content : {
-                id : id
-            }
-        });
+        console.log("Enable counter "+id);
     }
 
     onCounterDisable(id) {
-        WebsocketActions.websocketSend({
-            route : 'demo/disable',
-            content : {
-                id : id
-            }
-        });
+        console.log("Disable counter "+id);
     }
 
-    onWebsocketOpened() {
-        WebsocketActions.websocketSend({
-            route : 'demo/register',
-            content : {
-                ids : 4
-            }
-        });
-    }
 }
 
 export default CounterStore;

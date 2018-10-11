@@ -12,11 +12,14 @@ class Counter extends Reflux.Component {
         this.state = {
             status: 'enabled',
         };
-
         this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick(e) { //change status on click
+    handleClick(e) {
+        // update the counter in the parent
+        //this.props.updateCounter(this.props.id);
+
+        // Change the local state to reflect the enabled status
         if (this.state.status === 'enabled') {
             this.setState({ status: 'disabled' });
             CounterActions.counterDisable(this.props.id);
