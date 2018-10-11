@@ -2,7 +2,6 @@ import React from 'react';
 import Reflux from 'reflux';
 import Item from './Item';
 import CounterStore from '../stores/CounterStore';
-import CounterActions from '../actions/CounterActions';
 
 class List extends Reflux.Component {
 
@@ -24,7 +23,7 @@ class List extends Reflux.Component {
                         }, item);
 
                         // Use the 'rest operator' (three dots)
-                        return <Item {...props} />
+                        return <Item { ...props } />
                     })
                 }
             </div>
