@@ -1,6 +1,5 @@
 import Reflux from 'reflux';
 import CounterActions from '../actions/CounterActions';
-import WebsocketActions from '../actions/WebsocketActions';
 
 import io from 'socket.io-client';
 
