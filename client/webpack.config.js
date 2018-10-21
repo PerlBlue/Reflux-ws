@@ -11,7 +11,8 @@ var config = {
         filename: 'bundle.js'
     },
     devServer: {
-        contentBase: './dst'
+        contentBase: './dst',
+        port: 8082
     },
     resolve: {
         extensions: ['.js', '.jsx']

@@ -1,6 +1,7 @@
 import Reflux from 'reflux';
 import CounterActions from '../actions/CounterActions';
 import WebsocketActions from '../actions/WebsocketActions';
+import DemoWebsocketActions from '../actions/websocket/Demo';
 
 import io from 'socket.io-client';
 
@@ -10,15 +11,13 @@ class CounterStore extends Reflux.Store {
         super();
         this.url = 'ws://localhost:8090';
 
-    	this.state = {items: [
-	        {name: "User 1", number: 0},
-	        {name: "User 2", number: 0},
-	        {name: "User 3", number: 0},
-	        {name: "User 4", number: 0},
-	    ]};
+        this.state = {
+            items : [],
+        };
 
-        this.listenables = [WebsocketActions, CounterActions];
+        this.listenables = [WebsocketActions, CounterActions, DemoWebsocketActions];
     }
+
 
     onCounterDestroy() {
         this.state = {};
@@ -43,12 +42,21 @@ class CounterStore extends Reflux.Store {
     }
 
     onWebsocketOpened() {
+        console.log("CounterStore: web socket opened");
+
         WebsocketActions.websocketSend({
             route : 'demo/register',
             content : {
                 ids : 4
             }
         });
+    }
+
+    onSuccessDemoWebsocketStatus(msg) {
+        console.log("DEMO WEBSOCKET STATUS %o",msg);
+
+        this.setState({ items: msg });
+        console.log("STATE %o", this.state);
     }
 }
 
