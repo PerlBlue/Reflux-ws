@@ -1,7 +1,7 @@
 import Reflux from 'reflux';
 import CounterActions from '../actions/CounterActions';
 import WebsocketActions from '../actions/WebsocketActions';
-import DemoWebsocketActions from '../actions/websocket/Demo';
+import DemoWebsocketActions from '../actions/websocket/DemoWebsocketActions';
 
 import io from 'socket.io-client';
 
@@ -24,6 +24,7 @@ class CounterStore extends Reflux.Store {
     }
 
     onCounterEnable(id) {
+        console.log("COUNTER ENABLE %o",id);
         WebsocketActions.websocketSend({
             route : 'demo/enable',
             content : {

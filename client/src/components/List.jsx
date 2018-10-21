@@ -19,7 +19,6 @@ class List extends Reflux.Component {
                     this.state.items.map((item, index) => {
                         // Each item in an array must have a unique 'key'
                         item.key = index;
-                        item.id = index;
 
                         // Use the 'rest operator' (three dots)
                         return <Item {...item} />

@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import WebsocketActions from '../actions/WebsocketActions.jsx';
 
 var actionMap = {};
-actionMap['demo']   = require('../actions/websocket/Demo.jsx');
+actionMap['demo']   = require('../actions/websocket/DemoWebsocketActions.jsx');
 
 class Websocket {
 
@@ -57,11 +57,7 @@ class Websocket {
         var method  = routeMethod.substring(index+1);
         var action  = 'success';
 
-console.log("actionMap %o",actionMap);
-console.log("route = ["+route+"]");
-
         var actionClass  = actionMap[route];
-console.log("actionClass %o", actionClass);
 
         // Capitalize first letter of 'method' and 'route'
         method      = method.charAt(0).toUpperCase() + method.slice(1);
@@ -78,8 +74,6 @@ console.log("actionClass %o", actionClass);
 
         // Combine to create the action name
         action  = action + route + "Websocket" + method;
-
-console.log("actionClass2 %o", actionClass[action]);
 
         // Convert the route and method into an action
         actionClass[action](json.content);
