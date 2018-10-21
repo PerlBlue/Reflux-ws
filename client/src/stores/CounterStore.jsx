@@ -47,9 +47,7 @@ class CounterStore extends Reflux.Store {
 
         WebsocketActions.websocketSend({
             route : 'demo/register',
-            content : {
-                ids : 4
-            }
+            content : {}
         });
     }
 

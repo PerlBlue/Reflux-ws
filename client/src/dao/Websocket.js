@@ -40,7 +40,7 @@ class Websocket {
         WebsocketActions.websocketOpened();
     }
 
-    // Handle messages from the Server
+    // Handle incoming messages from the Server, convert them to actions
     //
     // for example: if the route comes in as '/demo/status'
     // We need to do actions from 'actions/websocket/Demo.js'
