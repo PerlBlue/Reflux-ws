@@ -1,13 +1,10 @@
 import React from 'react';
 import Counter from './Counter';
 
-function Item(props) {
-    return (
-        <div className="list__item">
-            <div className="list__name">{props.name}</div>
-            <Counter {...props} />
-        </div>
-    );
-}
+const Item = ({updateCounter, item}) =>
+    <div className="list__item">
+        <div className="list__name">{item.name}</div>
+        <Counter updateCounter={updateCounter} {...item} />
+    </div>
 
 export default Item;

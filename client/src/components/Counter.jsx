@@ -3,7 +3,6 @@ import React from 'react';
 class Counter extends React.Component {
 
     constructor(props) {
-        // So we can access 'this.props' in the constructor
         super(props);
 
         // Local state
@@ -26,14 +25,15 @@ class Counter extends React.Component {
     }
 
     render() {
-        const counterClass = 'list__counter' + ' '
-                + 'list__counter--' + this.state.status;
-        return (
-            <div onClick={this.handleClick} className={counterClass}>
-                {this.props.number}
-            </div>
-        );
+        const counterClass = 'list__counter' + ' ' + 'list__counter--' + this.state.status;
+        return <CounterComponent counterClass={counterClass} handleClick={this.handleClick} number={this.props.number} />;
     }
 };
+
+// Pure Stateless Component
+const CounterComponent = ({handleClick, counterClass, number}) =>
+    <div onClick={handleClick} className={counterClass}>
+        {number}
+    </div>
 
 export default Counter;

@@ -22,16 +22,18 @@ class List extends React.Component {
     }
     render() {
         return (
-            <div className="list">
-                {
-                    this.state.items.map((item, index) => {
-                        return <Item key={index} updateCounter={this.updateCounter} {...item} />
-                    })
-                }
-            </div>
-           );
+            <ListComponent items={this.state.items} updateCounter={this.updateCounter} />
+        );
     }
-
 };
+
+// Stateless pure component
+const ListComponent = ({ items, updateCounter}) =>
+    <div className="list"> {
+        items.map((item, index) => {
+            return <Item key={index} updateCounter={updateCounter} item={item} />
+        })
+    }
+    </div>
 
 export default List;
