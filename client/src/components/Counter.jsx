@@ -20,8 +20,7 @@ class Counter extends React.Component {
         // Change the local state to reflect the enabled status
         if (this.state.status === 'enabled') {
             this.setState({ status: 'disabled' });
-        }
-        if (this.state.status === 'disabled') {
+        } else if (this.state.status === 'disabled') {
             this.setState({ status: 'enabled' });
         }
     }

@@ -19,21 +19,13 @@ class List extends React.Component {
         const newItems = this.state.items.slice();
         newItems[index].number = newItems[index].number + 1;
         this.setState({items: newItems});
-
     }
     render() {
         return (
             <div className="list">
                 {
                     this.state.items.map((item, index) => {
-                        // shallow copy
-                        const props = Object.assign({
-                            key: index,
-                            updateCounter: this.updateCounter,
-                        }, item);
-
-                        // Use the 'rest operator' (three dots)
-                        return <Item {...props} />
+                        return <Item key={index} updateCounter={this.updateCounter} {...item} />
                     })
                 }
             </div>
