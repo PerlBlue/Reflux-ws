@@ -15,7 +15,16 @@ class CounterStore extends Reflux.Store {
             items : [],
         };
 
-        this.listenables = [WebsocketActions, CounterActions, DemoWebsocketActions];
+        this.listenables = [CounterActions, WebsocketActions, DemoWebsocketActions];
+    }
+
+    onWebsocketOpened() {
+        console.log("CounterStore: web socket opened");
+
+        WebsocketActions.websocketSend({
+            route : 'demo/register',
+            content : {}
+        });
     }
 
 
@@ -42,14 +51,6 @@ class CounterStore extends Reflux.Store {
         });
     }
 
-    onWebsocketOpened() {
-        console.log("CounterStore: web socket opened");
-
-        WebsocketActions.websocketSend({
-            route : 'demo/register',
-            content : {}
-        });
-    }
 
     onSuccessDemoWebsocketStatus(msg) {
         console.log("DEMO WEBSOCKET STATUS %o",msg);

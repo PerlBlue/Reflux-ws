@@ -13,19 +13,23 @@ class Websocket {
 
         this.handleOpen = this.handleOpen.bind(this);
 
+        // Handle the opening of the websocket
+        //
         this.socket = new WebSocket(this.url);
         this.socket.onopen = function(event) {
             this.handleOpen(event);
         }.bind(this);
 
+        // Handle receiving messages from the server
+        //
         this.socket.onmessage = function(event) {
             this.handleMessage(event);
         }.bind(this);
 
-        console.log("constructor");
-
-        WebsocketActions.websocketSend.listen( (content) => {
-            var msg = JSON.stringify(content);
+        // Handle sending messages to the server
+        //
+        WebsocketActions.websocketSend.listen( (object) => {
+            var msg = JSON.stringify(object);
             console.log("Websocket SEND "+msg);
             this.socket.send(msg);
         });
